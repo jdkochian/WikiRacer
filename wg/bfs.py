@@ -72,10 +72,11 @@ def createList(v, api) -> list:
     return list
 
 def main():
+    #Start article and end article:
     m = wikipedia.page('Dog', auto_suggest = False)
     s = wikipedia.page('Hug', auto_suggest = False)
     list = bfs(m, s)
-    print('I MADE IT THIS FAR!')
+    print("This is the path:")
     for i in list:
         print(i.title)
 
