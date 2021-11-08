@@ -10,7 +10,7 @@ def bfs(u, v) -> list:
     q.append(u)
     SFMap[u.title] = NodeData(0, None)
 
-    list = createList(v, api)
+    lst = createList(v, api)
 
     while q:
         u = q.popleft()
@@ -20,7 +20,7 @@ def bfs(u, v) -> list:
             return pathify(SFMap, v)
 
         for pageTitle in u.links:
-            if(len(list) == 1 or pageTitle.lower() in list):
+            if(len(list) == 1 or pageTitle.lower() in lst):
 
                 try:
                     wikiPage = wikipedia.page(pageTitle, auto_suggest = False)
@@ -46,38 +46,38 @@ def bfs(u, v) -> list:
     return []
 
 def pathify(map, v) -> list:
-    list = []
+    lst = []
     page = v
 
     while(page != None):
-        list.append(page)
+        lst.append(page)
         page = map.get(page.title).bkptr
 
-    return list
+    return lst
 
 def createList(v, api) -> list:
     jsonList = api.words(ml=v.title, v = 'enwiki')
-    list = []
+    lst = []
     for j in jsonList:
-        list.append(j['word'])
+        lst.append(j['word'])
         children = api.words(ml=j['word'], v ='enwiki')
         for k in children:
-            if k['word'] not in list:
-                list.append(k['word'])
-    list.append(v.title.lower())
+            if k['word'] not in lst:
+                lst.append(k['word'])
+    lst.append(v.title.lower())
     for d in v.links:
         if d not in list:
-            list.append(d.lower())
-    print(list)
-    return list
+            lst.append(d.lower())
+    print(lst)
+    return lst
 
 def main():
     #Start article and end article:
     m = wikipedia.page('Dog', auto_suggest = False)
     s = wikipedia.page('Hug', auto_suggest = False)
-    list = bfs(m, s)
+    lst = bfs(m, s)
     print("This is the path:")
-    for i in list:
+    for i in lst:
         print(i.title)
 
 if __name__ == "__main__":
