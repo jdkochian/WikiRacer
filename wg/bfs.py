@@ -6,12 +6,21 @@ from datamuse import datamuse
 api = datamuse.Datamuse()
 
 def bfs(u, v) -> list:
+    """
+    Perform a modified breadth first search to find 
+    the shortest* path between two articles on Wikipedia. 
+
+    `u`: Source article 
+    `v`: Target Article 
+
+    Returns list of articles in the shortest* path 
+    """
     SFMap = {}
     q = deque()
     q.append(u)
     SFMap[u.title] = NodeData(0, None)
 
-    lst = createList(v, api)
+    lst = get_related_articles(v)
 
     while q:
         u = q.popleft()
@@ -46,17 +55,31 @@ def bfs(u, v) -> list:
 
     return []
 
-def pathify(map, v) -> list:
+def pathify(SFMap, v) -> list:
+    """
+    Using backpointers, create a path back from the target article
+    to the source article 
+
+    `SFMap`: Dictionary that corresponds to the settled/frontier set in tradiitonal Dijkstra's Algorithm 
+    `v`: Target article 
+
+    """
     lst = []
     page = v
 
     while(page != None):
         lst.append(page)
-        page = map.get(page.title).bkptr
+        page = SFMap[page.title].bkptr
 
     return lst
 
-def createList(v, api) -> list:
+def get_related_articles(v) -> list:
+    """
+    Create a list of related articles to the target article in order to
+    pare down searchable articles from all of wikipedia. 
+
+    `v`: Target article 
+    """
     jsonList = api.words(ml=v.title, v = 'enwiki')
     lst = []
     for j in jsonList:
