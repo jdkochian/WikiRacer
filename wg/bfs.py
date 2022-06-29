@@ -21,7 +21,7 @@ def bfs(u, v) -> list:
             return pathify(SFMap, v)
 
         for pageTitle in u.links:
-            if(len(list) == 1 or pageTitle.lower() in lst):
+            if(len(lst) == 1 or pageTitle.lower() in lst):
 
                 try:
                     wikiPage = wikipedia.page(pageTitle, auto_suggest = False)
@@ -39,8 +39,8 @@ def bfs(u, v) -> list:
                         print("Queue Size: " + str(len(q)) + " articles!")
                         print("\n")
 
-                #if (pageTitle == v.title):
-                if(wikipage == v):
+                if (pageTitle == v.title):
+                # if(wikipage == v):
                     q.appendleft(wikiPage)
                     break
 
@@ -66,16 +66,16 @@ def createList(v, api) -> list:
             if k['word'] not in lst:
                 lst.append(k['word'])
     lst.append(v.title.lower())
-    for d in v.links:
-        if d not in list:
-            lst.append(d.lower())
+    # for d in v.links:
+    #     if d not in lst:
+    #         lst.append(d.lower())
     print(lst)
     return lst
 
 def main():
     #Start article and end article:
     m = wikipedia.page('Dog', auto_suggest = False)
-    s = wikipedia.page('Hug', auto_suggest = False)
+    s = wikipedia.page('Angst', auto_suggest = False)
     lst = bfs(m, s)
     print("This is the path:")
     for i in lst:
