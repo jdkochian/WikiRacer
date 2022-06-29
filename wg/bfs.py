@@ -3,8 +3,9 @@ from collections import deque
 from NodeData import NodeData
 from datamuse import datamuse
 
+api = datamuse.Datamuse()
+
 def bfs(u, v) -> list:
-    api = datamuse.Datamuse()
     SFMap = {}
     q = deque()
     q.append(u)
